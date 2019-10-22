@@ -2,20 +2,32 @@ describe('Bubble Sort', function(){
   beforeAll(function(){
     spyOn(window, 'swap').and.callThrough()
   });
-  it('sorting an array', function(){
+  beforeEach(function(){
+    swap.calls.reset()
+  })
+  it('sorts non-numerical arrays', function(){
+    var arrToSort = [{ age: 4 }, { age: 8 }, { age: 2 }, { age: 9 }];
+    var sorted = bubbleSort(arrToSort, function comparator (a, b) {
+    if (a.age < b.age) return -1; // returning `-1` means "a goes before b"
+    if (a.age > b.age) return 1;  // returning  `1` means "b goes before a"
+    return 0; // returning 0 means "a and b are equivalent"
+  });
+    expect(sorted).toEqual([{ age: 2 }, { age: 4 }, { age: 8 }, { age: 9 }]);
+  })
+  it('sorts an array', function(){
     bubbleSort([1, 5, 3]);
     expect(swap.calls.count()).toEqual(1);
-    swap.calls.reset();
+    // swap.calls.reset();
   });
   it('sorts an array', function (){
     bubbleSort([1, 9, 5, 3, 7]);
     expect(swap.calls.count()).toEqual(4);
-    swap.calls.reset();
+    // swap.calls.reset();
   })
   it('sorts an array', function (){
     bubbleSort([9, 7, 5, 3, 1]);
     expect(swap.calls.count()).toEqual(10);
-    swap.calls.reset();
+    // swap.calls.reset();
   })
   it('handles an empty array', function(){
     expect( bubbleSort([]) ).toEqual( [] );
